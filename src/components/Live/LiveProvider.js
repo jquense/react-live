@@ -1,11 +1,10 @@
-import createContext from 'create-react-context';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { generateElement, renderElementAsync } from '../../utils/transpile';
 import cn from '../../utils/cn';
 import Style from '../Editor/Style';
 
-export const LiveContext = createContext('live');
+export const LiveContext = React.createContext('live');
 
 export default class LiveProvider extends Component {
   static defaultProps = {
@@ -21,6 +20,7 @@ export default class LiveProvider extends Component {
     mountStylesheet: PropTypes.bool,
     noInline: PropTypes.bool,
     transformCode: PropTypes.func,
+    compileOptions: PropTypes.object,
   };
 
   onChange = code => {
@@ -59,19 +59,20 @@ export default class LiveProvider extends Component {
   };
 
   componentWillMount() {
-    const { code, scope, transformCode, noInline } = this.props;
+    const { code, scope, transformCode, noInline, compileOptions } = this.props;
 
-    this.transpile({ code, scope, transformCode, noInline });
+    this.transpile({ code, scope, transformCode, compileOptions, noInline });
   }
 
-  componentWillReceiveProps({ code, scope, noInline, transformCode }) {
+  componentWillReceiveProps({ code, scope, noInline, transformCode, compileOptions }) {
     if (
       code !== this.props.code ||
       scope !== this.props.scope ||
       noInline !== this.props.noInline ||
-      transformCode !== this.props.transformCode
+      transformCode !== this.props.transformCode ||
+      compileOptions !== this.props.compileOptions
     ) {
-      this.transpile({ code, scope, transformCode, noInline });
+      this.transpile({ code, scope, transformCode, noInline, compileOptions });
     }
   }
 

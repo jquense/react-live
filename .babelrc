@@ -8,7 +8,7 @@
     "transform-object-rest-spread",
     "transform-class-properties",
     ["transform-react-remove-prop-types", {
-      "mode": "wrap"
+      "removeImport": true
     }]
   ]
 }
