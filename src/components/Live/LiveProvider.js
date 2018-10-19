@@ -24,19 +24,20 @@ export default class LiveProvider extends Component {
   };
 
   onChange = code => {
-    const { scope, transformCode, noInline } = this.props;
-    this.transpile({ code, scope, transformCode, noInline });
-  };
+    const { scope, transformCode, noInline, compileOptions } = this.props
+    this.transpile({ code, scope, transformCode, noInline, compileOptions })
+  }
 
   onError = error => {
     this.setState({ error: error.toString() });
   };
 
-  transpile = ({ code, scope, transformCode, noInline = false }) => {
+  transpile = ({ code, scope, transformCode, compileOptions, noInline = false }) => {
     // Transpilation arguments
     const input = {
-      code: transformCode ? transformCode(code) : code,
       scope,
+      compileOptions,
+      code: transformCode ? transformCode(code) : code,
     };
     const errorCallback = err =>
       this.setState({ element: undefined, error: err.toString() });

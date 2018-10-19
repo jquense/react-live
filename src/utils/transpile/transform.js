@@ -3,12 +3,12 @@ import assign from 'core-js/fn/object/assign'
 
 export const _poly = { assign }
 
-const opts = {
+const defaults = {
   objectAssign: '_poly.assign',
   transforms: {
     dangerousForOf: true,
-    dangerousTaggedTemplateString: true
-  }
+    dangerousTaggedTemplateString: true,
+  },
 }
 
-export default code => _transform(code, opts).code
+export default (code, opts = defaults) => _transform(code, opts).code

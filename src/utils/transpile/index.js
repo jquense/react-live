@@ -3,14 +3,14 @@ import errorBoundary from './errorBoundary'
 import evalCode from './evalCode'
 
 export const generateElement = (
-  { code = '', scope = {} },
+  { code = '', scope = {}, compileOptions },
   errorCallback
 ) => {
   // NOTE: Remove trailing semicolon to get an actual expression.
   const codeTrimmed = code.trim().replace(/;$/, '')
 
   // NOTE: Workaround for classes and arrow functions.
-  const transformed = transform(`(${codeTrimmed})`).trim()
+  const transformed = transform(`(${codeTrimmed})`, compileOptions).trim()
 
   return errorBoundary(
     evalCode(
@@ -22,7 +22,7 @@ export const generateElement = (
 }
 
 export const renderElementAsync = (
-  { code = '', scope = {} },
+  { code = '', scope = {}, compileOptions },
   resultCallback,
   errorCallback
 ) => {
@@ -42,7 +42,7 @@ export const renderElementAsync = (
   }
 
   evalCode(
-    transform(code),
+    transform(code, compileOptions),
     { ...scope, render }
   )
 }
